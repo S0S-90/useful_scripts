@@ -1,8 +1,5 @@
 import csv
 
-def make_lower(string):    
-    return string[0].lower() + string[1:]
-
 def umlaute_ersetzen(string):
     neu = ""
     for i in string:
@@ -14,6 +11,8 @@ def umlaute_ersetzen(string):
             neu = neu + "ue"
         elif ord(i) == 223:
             neu = neu + "ss"
+        elif i == " ":
+            neu = neu + "_"
         else:
             neu = neu + i
     return neu
@@ -27,8 +26,8 @@ with open("namen.csv") as namen:  # Datei, in der jede Zeile so aussieht: Vornam
 def main():
     namelist_neu = []
     for name in namelist:
-        vorname = umlaute_ersetzen(make_lower(name[0]))
-        nachname = umlaute_ersetzen(make_lower(name[1]))
+        vorname = umlaute_ersetzen(name[0].lower())
+        nachname = umlaute_ersetzen(name[1].lower())
         namelist_neu.append([vorname, nachname])
 
     mails = []
