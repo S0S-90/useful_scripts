@@ -3,8 +3,10 @@ from __future__ import division
 # Primzahlen
 # prim(integer): überprüfen, ob Primzahl, bzw. kleinster Teiler -> math
 # eratostenes(obergrenze): Erstellung von Primzahlen (Sieb des Eratosthenes) -> numpy, math
+# sexy_primes(obergrenze): sexy Primzahlpaare -> eratosthenes
+# sexy_primes_triples_quadruples(obergrenze): sexy Primzahl-Triple und -Quadruple -> eratosthenes, sexy_primes
 
-# sonstiges zum Thema Zahlen
+# Sonstiges zum Thema Zahlen
 # quersumme(integer): Quersumme
 # anzahl_ziffern(integer): Anzahl der Ziffern
 # create_products(summe): Produkte zweier Zahlen mit gegebener Summe
@@ -118,6 +120,34 @@ def eratosthenes(obergrenze):
         if prim[counter] == 1:
             primzahlen.append(counter)
     return primzahlen
+
+def sexy_primes(obergrenze):
+    """gibt eine Liste von Tupeln aus sexy Primzahl-Paaren aus
+    
+    benoetigt: eratosthenes"""
+    primes = eratosthenes(obergrenze)
+    sexy = []
+    for p in primes:
+        if p+6 in primes:
+            sexy.append((p,p+6))
+    return sexy
+
+def sexy_primes_triples_quadruples(obergrenze):
+    """gibt zwei Listen von Tupeln, eine aus aus sexy Primzahl-Tripeln und eine aus sexy Quadrupeln aus
+    TODO: zusammenfuegen mit sexy_primes
+    
+    benoetigt: eratosthenes, sexy_primes"""
+    primes = eratosthenes(obergrenze)
+    sexy = sexy_primes(obergrenze)
+    triples = []
+    quadruples = []
+    for s in sexy:
+        if s[1]+6 in primes:
+            if s[1]+12 not in primes:  # Triple: nur wenn kein Quadrupel
+                triples.append((s[0],s[1],s[1]+6))
+            else:                      # Quadrupel
+                quadruples.append((s[0],s[1],s[1]+6,s[1]+12))
+    return triples, quadruples
 
 def rotations(integer):
     """gibt eine Liste der Rotationen einer Zahl (197 -> 971 and 719) aus
